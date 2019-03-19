@@ -8,9 +8,8 @@
 		<artifactId>web-crawler-starter-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>web-crawler-silkhom</artifactId>
-	<name>web-crawler-silkhom</name>
-	<description>Demo project for Spring Boot</description>
+	<artifactId>web-crawler-connector-silkhom</artifactId>
+	<name>web-crawler-connector-silkhom</name>
 
 
 	<dependencies>
