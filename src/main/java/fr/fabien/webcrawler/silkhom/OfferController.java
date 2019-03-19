@@ -37,7 +37,7 @@ public class OfferController {
 			Elements lOfferElements = lDocument.select("#gridOffers .locations-auvergne-rhone-alpes");
 
 			Elements lFilteredOfferElements = new Elements(
-					lOfferElements.stream()
+					lOfferElements.parallelStream()
 					.filter(offer -> offer.toString().contains("contrat-CDI"))
 					.collect(Collectors.toList()));
 
