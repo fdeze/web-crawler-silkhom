@@ -26,7 +26,7 @@ public class OfferController {
 
 	@GetMapping(path = "/getOffers/silkhom", produces = { "application/json" })
 	public List<SilkhomOfferVo> getOffers() {
-		List<SilkhomOfferVo> lOffers = new ArrayList();
+		List<SilkhomOfferVo> lOffers = new ArrayList<>();
 		try {
 
 			Document lDocument = Jsoup.connect(URL).userAgent(Constants.USER_AGENT).get();
