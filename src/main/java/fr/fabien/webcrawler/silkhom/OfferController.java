@@ -9,7 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.fabien.contracts.silkhom.SilkhomOfferVo;
+import fr.fabien.contracts.OfferVo;
 import fr.fabien.webcrawler.silkhom.internal.SilkhomOfferService;
 
 @EnableDiscoveryClient
@@ -21,10 +21,10 @@ public class OfferController {
 	private SilkhomOfferService silkhomProxy;
 
 	@GetMapping(path = "/getOffers/silkhom", produces = { "application/json" })
-	public List<SilkhomOfferVo> getOffers() {
+	public List<OfferVo> getOffers() {
 
 		logger.info("Reception requête vers silkhomProxy-microservice - getOffers");
-		List<SilkhomOfferVo> lOfferList = silkhomProxy.getOffers();
+		List<OfferVo> lOfferList = silkhomProxy.getOffers();
 		logger.info("Reception requête vers silkhomProxy-microservice - getOffers - nombre résultats : {}",
 				lOfferList.size());
 		return lOfferList;

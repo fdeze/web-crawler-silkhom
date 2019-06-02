@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import fr.fabien.contracts.OfferVo;
 import fr.fabien.contracts.silkhom.SilkhomOfferVo;
 import fr.fabien.webcrawler.common.Constants;
 import fr.fabien.webcrawler.common.DateParseUtils;
@@ -26,9 +27,9 @@ public class SilkhomOfferServiceImpl implements SilkhomOfferService {
 
 	private static String URL = "https://www.silkhom.com/toutes-nos-offres-demploi/";
 
-	public List<SilkhomOfferVo> getOffers() {
+	public List<OfferVo> getOffers() {
 
-		List<SilkhomOfferVo> lOffers = new ArrayList<>();
+		List<OfferVo> lOffers = new ArrayList<>();
 		try {
 
 			Document lDocument = Jsoup.connect(URL).userAgent(Constants.USER_AGENT).get();
@@ -47,8 +48,8 @@ public class SilkhomOfferServiceImpl implements SilkhomOfferService {
 
 	}
 
-	private SilkhomOfferVo getDetailOffer(Element offerElement) {
-		SilkhomOfferVo lOffer = new SilkhomOfferVo();
+	private OfferVo getDetailOffer(Element offerElement) {
+		OfferVo lOffer = new OfferVo();
 
 		try {
 			Elements lAElement = offerElement.select(".single-offre-header a");
@@ -75,7 +76,7 @@ public class SilkhomOfferServiceImpl implements SilkhomOfferService {
 			metasOffer = offerElement.select(".offre-resume p");
 			if (metasOffer != null && !metasOffer.isEmpty()) {
 				List<String> lListMetas = Arrays.asList(metasOffer.get(0).text().split("-"));
-				lOffer.setInformations(lListMetas.toString().replaceAll("\\[, ", "").replaceAll("]", ""));
+				lOffer.setDescriptionResume(lListMetas.toString().replaceAll("\\[, ", "").replaceAll("]", ""));
 
 			}
 
