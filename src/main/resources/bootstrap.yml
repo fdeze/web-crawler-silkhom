@@ -1,4 +1,7 @@
 spring:
   application:
     name: web-crawler-connector-silkhom
-     
+  security:
+   user:
+    name: utilisateur
+    password: Lam@86         
