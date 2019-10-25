@@ -1,6 +1,5 @@
 package fr.fabien.webcrawler.silkhom.internal;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,8 +39,8 @@ public class SilkhomOfferServiceImpl implements SilkhomOfferService {
 			return lFilteredOfferElements.parallelStream().map(element -> getDetailOffer(element))
 					.collect(Collectors.toList());
 
-		} catch (IOException e) {
-			logger.error("getOffers - IOException", e);
+		} catch (Exception e) {
+			logger.error("getOffers - Exception", e);
 			return lOffers;
 		}
 
@@ -76,38 +75,39 @@ public class SilkhomOfferServiceImpl implements SilkhomOfferService {
 			if (metasOffer != null && !metasOffer.isEmpty()) {
 				List<String> lListMetas = Arrays.asList(metasOffer.get(0).text().split("-"));
 				lOffer.setDescriptionResume(lListMetas.toString().replaceAll("\\[, ", "").replaceAll("]", ""));
-
 			}
 
-			Document lDocumentOffre = Jsoup.connect(lUrl).userAgent(Constants.USER_AGENT).get();
-			Elements descriptionElement = lDocumentOffre.select(".single-page");
+			logger.info("getDetailOffer - url=" + lUrl);
+			if (StringUtils.isNotEmpty(lUrl)) {
+				Document lDocumentOffre = Jsoup.connect(lUrl).userAgent(Constants.USER_AGENT).get();
+				Elements descriptionElement = lDocumentOffre.select(".single-page");
 
-			String descriptionOffreTotal = descriptionElement.html();
+				String descriptionOffreTotal = descriptionElement.html();
 
-			String descriptionEntreprise = StringUtils.substringBetween(descriptionOffreTotal,
-					"<h2 class=\"mt-0\">Société</h2>", "<h2>Poste</h2>");
-			lOffer.setEntreprise(descriptionEntreprise);
+				String descriptionEntreprise = StringUtils.substringBetween(descriptionOffreTotal,
+						"<h2 class=\"mt-0\">Société</h2>", "<h2>Poste</h2>");
+				lOffer.setEntreprise(descriptionEntreprise);
 
-			String descriptionOffre = StringUtils.substringBetween(descriptionOffreTotal, "<h2>Poste</h2> ",
-					"<h2>Profil recherché</h2>");
-			lOffer.setDescriptionOffre(descriptionOffre);
+				String descriptionOffre = StringUtils.substringBetween(descriptionOffreTotal, "<h2>Poste</h2> ",
+						"<h2>Profil recherché</h2>");
+				lOffer.setDescriptionOffre(descriptionOffre);
 
-			String descriptionProfil = StringUtils.substringBetween(descriptionOffreTotal, "<h2>Profil recherché</h2>",
-					"<h2>Compléments</h2>");
-			lOffer.setDescriptionProfil(descriptionProfil);
+				String descriptionProfil = StringUtils.substringBetween(descriptionOffreTotal,
+						"<h2>Profil recherché</h2>", "<h2>Compléments</h2>");
+				lOffer.setDescriptionProfil(descriptionProfil);
 
-			String adresse = StringUtils.substringBetween(descriptionOffreTotal, "Lieu :", "<br>");
-			lOffer.setAdresse(adresse);
+				String adresse = StringUtils.substringBetween(descriptionOffreTotal, "Lieu :", "<br>");
+				lOffer.setAdresse(adresse);
 
-			String salaire = StringUtils.substringBetween(descriptionOffreTotal, "Salaire :", "</p> ");
-			lOffer.setSalaire(salaire);
+				String salaire = StringUtils.substringBetween(descriptionOffreTotal, "Salaire :", "</p> ");
+				lOffer.setSalaire(salaire);
+			}
 
-		} catch (IOException exception) {
+		} catch (Exception exception) {
 			Thread.currentThread().interrupt();
 			logger.error("erreur", exception);
 		}
 		return lOffer;
 	}
-
 
 }
